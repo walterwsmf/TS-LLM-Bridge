@@ -18,7 +18,6 @@ import json
 import logging
 import time
 from datetime import datetime
-from typing import Any, Optional
 
 logger = logging.getLogger(__name__)
 
@@ -381,7 +380,6 @@ def consolidate_llm_logs(
     Kedro inputs:  outputs dos nodes anteriores (logs parciais)
     Kedro output:  cost_report
     """
-    import pandas as pd
 
     todos_logs = [analysis_log] + anomaly_logs + [recommendation_log]
     sucedidos = [l for l in todos_logs if l.get("sucesso")]

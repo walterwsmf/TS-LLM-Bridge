@@ -28,6 +28,7 @@ dependencies = [
     # Utilitários
     "python-dotenv>=1.0",
     "tiktoken>=0.7",
+    "ruff>=0.15.10",
 ]
 
 [project.optional-dependencies]

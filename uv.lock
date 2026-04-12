@@ -3374,6 +3374,7 @@ dependencies = [
     { name = "pandas" },
     { name = "pydantic" },
     { name = "python-dotenv" },
+    { name = "ruff" },
     { name = "statsmodels" },
     { name = "tiktoken" },
 ]
@@ -3410,6 +3411,7 @@ requires-dist = [
     { name = "pytest", marker = "extra == 'dev'", specifier = ">=8.0" },
     { name = "pytest-cov", marker = "extra == 'dev'" },
     { name = "python-dotenv", specifier = ">=1.0" },
+    { name = "ruff", specifier = ">=0.15.10" },
     { name = "ruff", marker = "extra == 'dev'" },
     { name = "statsmodels", specifier = ">=0.14" },
     { name = "tiktoken", specifier = ">=0.7" },
