@@ -60,20 +60,20 @@ def _extrair_tokens(response) -> tuple[int, int]:
     return 0, 0
 
 
-def _criar_llm(modelo: str, temperatura: float, provider: str, api_key: str):
-    """Instancia o LLM LangChain com a API key das credenciais."""
-    import os
+def _criar_llm(modelo: str, temperatura: float, provider: str):
+    """
+    Instancia o LLM LangChain.
 
+    As API keys são lidas automaticamente das variáveis de ambiente
+    populadas pelo CredentialsToEnvHook (OPENAI_API_KEY, etc.).
+    """
     if provider == "openai":
-        os.environ["OPENAI_API_KEY"] = api_key
         from langchain_openai import ChatOpenAI
         return ChatOpenAI(model=modelo, temperature=temperatura)
     elif provider == "anthropic":
-        os.environ["ANTHROPIC_API_KEY"] = api_key
         from langchain_anthropic import ChatAnthropic
         return ChatAnthropic(model=modelo, temperature=temperatura)
     elif provider == "google":
-        os.environ["GOOGLE_API_KEY"] = api_key
         from langchain_google_genai import ChatGoogleGenerativeAI
         return ChatGoogleGenerativeAI(model=modelo, temperature=temperatura)
     else:
@@ -183,28 +183,26 @@ _SYSTEM_MODELO   = _BASE_SYSTEM + "\nEspecialização: seleção de modelos de f
 def run_llm_analysis(
     prompt_inputs: dict,
     llm_params: dict,
-    credentials: dict,
 ) -> tuple[dict, dict]:
     """
     Executa análise completa da série temporal com LLM.
 
-    Kedro inputs:  prompt_inputs, params:llm, credentials:openai (ou anthropic)
-    Kedro outputs: llm_analysis_output, cost_report (parcial)
+    Kedro inputs:  prompt_inputs, params:llm
+    Kedro outputs: llm_analysis_output, analysis_log
+
+    API keys lidas das variáveis de ambiente via CredentialsToEnvHook.
 
     Args:
         prompt_inputs: dict gerado por build_prompt_inputs.
         llm_params: subdict 'llm' do parameters.yml.
-        credentials: credenciais do provider (api_key).
 
     Returns:
         Tuple (analysis_dict, log_entry_dict).
     """
-    api_key = credentials.get("api_key", "")
     llm = _criar_llm(
         llm_params["modelo"],
         llm_params["temperatura"],
         llm_params["provider"],
-        api_key,
     )
 
     analise_inputs = prompt_inputs["analise_completa"]
@@ -246,33 +244,28 @@ def run_anomaly_investigation(
     ts_context: dict,
     llm_params: dict,
     anomaly_params: dict,
-    credentials: dict,
 ) -> tuple[list[dict], list[dict]]:
     """
     Investiga cada anomalia detectada individualmente.
 
-    Kedro inputs:  prompt_inputs, ts_context, params:llm,
-                   params:anomaly_analysis, credentials:openai
-    Kedro outputs: anomaly_investigation, anomaly_logs (parcial)
+    Kedro inputs:  prompt_inputs, ts_context, params:llm, params:anomaly_analysis
+    Kedro outputs: anomaly_investigation, anomaly_logs
 
     Args:
         prompt_inputs: dict gerado por build_prompt_inputs.
         ts_context: contexto TS (para referência na investigação).
         llm_params: configuração do LLM.
         anomaly_params: subdict 'anomaly_analysis'.
-        credentials: API key.
 
     Returns:
         Tuple (lista de resultados, lista de logs).
     """
     from langchain_core.messages import HumanMessage, SystemMessage
 
-    api_key = credentials.get("api_key", "")
     llm = _criar_llm(
         llm_params["modelo"],
         llm_params["temperatura"],
         llm_params["provider"],
-        api_key,
     )
 
     anomalias = prompt_inputs.get("anomalias", [])
@@ -332,22 +325,19 @@ def run_anomaly_investigation(
 def run_model_recommendation(
     prompt_inputs: dict,
     llm_params: dict,
-    credentials: dict,
 ) -> tuple[dict, dict]:
     """
     Recomenda modelo de forecast com justificativa técnica.
 
-    Kedro inputs:  prompt_inputs, params:llm, credentials:openai
-    Kedro outputs: model_recommendation, rec_log (parcial)
+    Kedro inputs:  prompt_inputs, params:llm
+    Kedro outputs: model_recommendation, rec_log
     """
     from langchain_core.messages import HumanMessage, SystemMessage
 
-    api_key = credentials.get("api_key", "")
     llm = _criar_llm(
         llm_params["modelo"],
         llm_params["temperatura"],
         llm_params["provider"],
-        api_key,
     )
 
     rec_inputs = prompt_inputs["selecao_modelo"]

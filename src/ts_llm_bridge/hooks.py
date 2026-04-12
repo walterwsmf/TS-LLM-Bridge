@@ -5,8 +5,9 @@ Hooks são o mecanismo do Kedro para cross-cutting concerns:
 logging, monitoramento, notificações, etc.
 
 Hooks disponíveis:
-  NodeTimingHook  → registra duração de cada node
-  LLMCostHook     → acumula custo total da sessão (lê dos logs)
+  CredentialsToEnvHook → lê credentials.yml e popula variáveis de ambiente
+  NodeTimingHook       → registra duração de cada node
+  LLMCostHook          → acumula custo total da sessão (lê dos logs)
 """
 
 from __future__ import annotations
@@ -20,6 +21,41 @@ from kedro.framework.hooks import hook_impl
 from kedro.pipeline.node import Node
 
 logger = logging.getLogger(__name__)
+
+
+class CredentialsToEnvHook:
+    """
+    Lê credentials.yml e popula variáveis de ambiente para os providers LLM.
+
+    Em Kedro 1.x o prefixo `credentials:` foi removido dos inputs de node.
+    Este hook injeta as chaves como env vars antes do pipeline rodar, para
+    que LangChain as consiga automaticamente (OPENAI_API_KEY, etc.).
+
+    Mapeamento:
+      credentials.yml → env var
+      openai.api_key  → OPENAI_API_KEY
+      anthropic.api_key → ANTHROPIC_API_KEY
+      google.api_key  → GOOGLE_API_KEY
+    """
+
+    _ENV_MAP = {
+        "openai": "OPENAI_API_KEY",
+        "anthropic": "ANTHROPIC_API_KEY",
+        "google": "GOOGLE_API_KEY",
+    }
+
+    @hook_impl
+    def after_context_created(self, context) -> None:
+        import os
+        try:
+            creds = context.config_loader.get("credentials")
+            for provider, env_var in self._ENV_MAP.items():
+                key = creds.get(provider, {}).get("api_key", "")
+                if key:
+                    os.environ[env_var] = key
+                    logger.debug(f"[CredentialsToEnvHook] {env_var} configurada.")
+        except Exception as exc:
+            logger.warning(f"[CredentialsToEnvHook] Não foi possível carregar credentials: {exc}")
 
 
 class NodeTimingHook:

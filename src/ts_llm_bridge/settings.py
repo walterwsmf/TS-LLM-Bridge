@@ -25,7 +25,6 @@ CONFIG_LOADER_ARGS = {
     },
 }
 
-# Hooks personalizados (adicionar aqui conforme necessário)
-# from ts_llm_bridge.hooks import ProjectHooks
-# HOOKS = (ProjectHooks(),)
-HOOKS = ()
+from ts_llm_bridge.hooks import CredentialsToEnvHook, NodeTimingHook
+
+HOOKS = (CredentialsToEnvHook(), NodeTimingHook())

@@ -17,8 +17,8 @@ feature_extraction:
 # --- LLM -----------------------------------------------------
 
 llm:
-  provider: "openai"                    # openai | anthropic | google
-  modelo: "gpt-4o-mini"                 # modelo padrão (mais barato)
+  provider: "google"                    # openai | anthropic | google
+  # modelo: "gpt-4o-mini"                 # modelo padrão (mais barato)
   temperatura: 0.0                      # 0 = determinístico
   max_tokens: 1000
   timeout_segundos: 60
@@ -29,7 +29,7 @@ llm:
   # modelo: "gpt-4o"                      # mais capaz, mais caro (OpenAI)
   # modelo: "claude-3-haiku-20240307"     # rápido e barato (Anthropic)
   # modelo: "claude-3-5-sonnet-20241022"  # mais capaz (Anthropic)
-  # modelo: "gemini-2.0-flash"            # rápido e barato (Google)
+  modelo: "gemini-2.0-flash"            # rápido e barato (Google)
   # modelo: "gemini-1.5-flash"            # alternativa Google
   # modelo: "gemini-1.5-pro"              # mais capaz (Google)
 
