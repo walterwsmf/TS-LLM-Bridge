@@ -382,12 +382,12 @@ def consolidate_llm_logs(
     """
 
     todos_logs = [analysis_log] + anomaly_logs + [recommendation_log]
-    sucedidos = [l for l in todos_logs if l.get("sucesso")]
+    sucedidos = [log for log in todos_logs if log.get("sucesso")]
 
-    custo_total = sum(l["custo_usd"] for l in sucedidos)
-    tokens_total = sum(l["tokens_total"] for l in sucedidos)
+    custo_total = sum(log["custo_usd"] for log in sucedidos)
+    tokens_total = sum(log["tokens_total"] for log in sucedidos)
     lat_media = (
-        sum(l["latencia_ms"] for l in sucedidos) / len(sucedidos)
+        sum(log["latencia_ms"] for log in sucedidos) / len(sucedidos)
         if sucedidos else 0
     )
 
@@ -398,12 +398,12 @@ def consolidate_llm_logs(
         "tokens_total": tokens_total,
         "latencia_media_ms": round(lat_media, 1),
         "por_tipo": {
-            l["tipo_analise"]: {
-                "custo_usd": round(l["custo_usd"], 8),
-                "tokens": l["tokens_total"],
-                "latencia_ms": l["latencia_ms"],
+            log["tipo_analise"]: {
+                "custo_usd": round(log["custo_usd"], 8),
+                "tokens": log["tokens_total"],
+                "latencia_ms": log["latencia_ms"],
             }
-            for l in sucedidos
+            for log in sucedidos
         },
         "gerado_em": datetime.now().isoformat(),
     }

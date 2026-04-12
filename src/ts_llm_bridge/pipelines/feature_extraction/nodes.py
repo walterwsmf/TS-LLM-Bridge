@@ -191,11 +191,16 @@ def _detectar_frequencia(index: pd.DatetimeIndex) -> tuple[str, Optional[int]]:
     if len(index) < 2:
         return "desconhecida", None
     delta = (index[1] - index[0]).days
-    if delta <= 1:    return "diária", 7
-    elif delta <= 8:  return "semanal", 52
-    elif delta <= 32: return "mensal", 12
-    elif delta <= 95: return "trimestral", 4
-    else:             return "anual", None
+    if delta <= 1:
+        return "diária", 7
+    elif delta <= 8:
+        return "semanal", 52
+    elif delta <= 32:
+        return "mensal", 12
+    elif delta <= 95:
+        return "trimestral", 4
+    else:
+        return "anual", None
 
 
 def _calcular_stl(series: pd.Series, period: int) -> tuple[float, pd.Series]:
@@ -286,9 +291,12 @@ def extract_ts_context(
     slope, _ = np.polyfit(x, series.values, 1)
     inclinacao = round(float(slope), 4)
     norm = abs(slope) / (abs(series.mean()) + 1e-9)
-    if norm < 0.01:    tendencia = "estavel"
-    elif slope > 0:    tendencia = "crescente"
-    else:              tendencia = "decrescente"
+    if norm < 0.01:
+        tendencia = "estavel"
+    elif slope > 0:
+        tendencia = "crescente"
+    else:
+        tendencia = "decrescente"
 
     # STL e anomalias
     if periodo_sazonal and n > 2 * periodo_sazonal:

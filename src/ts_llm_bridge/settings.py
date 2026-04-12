@@ -25,6 +25,6 @@ CONFIG_LOADER_ARGS = {
     },
 }
 
-from ts_llm_bridge.hooks import CredentialsToEnvHook, NodeTimingHook
+from ts_llm_bridge.hooks import CredentialsToEnvHook, NodeTimingHook  # noqa: E402
 
 HOOKS = (CredentialsToEnvHook(), NodeTimingHook())
