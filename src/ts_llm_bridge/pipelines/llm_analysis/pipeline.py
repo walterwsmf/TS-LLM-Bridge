@@ -26,25 +26,27 @@ from .nodes import (
 )
 
 
-def _get_credentials(llm_params, openai_creds, anthropic_creds):
+def _get_credentials(llm_params, openai_creds, anthropic_creds, google_creds):
     """Seleciona credenciais com base no provider configurado."""
     provider = llm_params.get("provider", "openai")
-    return openai_creds if provider == "openai" else anthropic_creds
+    return {"openai": openai_creds, "anthropic": anthropic_creds, "google": google_creds}.get(
+        provider, openai_creds
+    )
 
 
 # Wrappers para injeção correta de credenciais via catálogo
-def _run_llm_analysis(prompt_inputs, llm_params, openai_creds, anthropic_creds):
-    creds = _get_credentials(llm_params, openai_creds, anthropic_creds)
+def _run_llm_analysis(prompt_inputs, llm_params, openai_creds, anthropic_creds, google_creds):
+    creds = _get_credentials(llm_params, openai_creds, anthropic_creds, google_creds)
     result, log = run_llm_analysis(prompt_inputs, llm_params, creds)
     return result, log
 
-def _run_anomaly_investigation(prompt_inputs, ts_context, llm_params, anomaly_params, openai_creds, anthropic_creds):
-    creds = _get_credentials(llm_params, openai_creds, anthropic_creds)
+def _run_anomaly_investigation(prompt_inputs, ts_context, llm_params, anomaly_params, openai_creds, anthropic_creds, google_creds):
+    creds = _get_credentials(llm_params, openai_creds, anthropic_creds, google_creds)
     results, logs = run_anomaly_investigation(prompt_inputs, ts_context, llm_params, anomaly_params, creds)
     return results, logs
 
-def _run_model_recommendation(prompt_inputs, llm_params, openai_creds, anthropic_creds):
-    creds = _get_credentials(llm_params, openai_creds, anthropic_creds)
+def _run_model_recommendation(prompt_inputs, llm_params, openai_creds, anthropic_creds, google_creds):
+    creds = _get_credentials(llm_params, openai_creds, anthropic_creds, google_creds)
     result, log = run_model_recommendation(prompt_inputs, llm_params, creds)
     return result, log
 
@@ -60,6 +62,7 @@ def create_pipeline(**kwargs) -> Pipeline:
                 "params:llm",
                 "credentials:openai",
                 "credentials:anthropic",
+                "credentials:google",
             ],
             outputs=["llm_analysis_output", "analysis_log"],
             name="run_llm_analysis",
@@ -76,6 +79,7 @@ def create_pipeline(**kwargs) -> Pipeline:
                 "params:anomaly_analysis",
                 "credentials:openai",
                 "credentials:anthropic",
+                "credentials:google",
             ],
             outputs=["anomaly_investigation", "anomaly_logs"],
             name="run_anomaly_investigation",
@@ -90,6 +94,7 @@ def create_pipeline(**kwargs) -> Pipeline:
                 "params:llm",
                 "credentials:openai",
                 "credentials:anthropic",
+                "credentials:google",
             ],
             outputs=["model_recommendation", "rec_log"],
             name="run_model_recommendation",

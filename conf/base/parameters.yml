@@ -17,7 +17,7 @@ feature_extraction:
 # --- LLM -----------------------------------------------------
 
 llm:
-  provider: "openai"                    # openai | anthropic
+  provider: "openai"                    # openai | anthropic | google
   modelo: "gpt-4o-mini"                 # modelo padrão (mais barato)
   temperatura: 0.0                      # 0 = determinístico
   max_tokens: 1000
@@ -26,9 +26,12 @@ llm:
   pergunta_padrao: "Gere uma análise completa e recomende um modelo de forecast."
 
   # Modelos alternativos disponíveis:
-  # modelo: "gpt-4o"                    # mais capaz, mais caro
-  # modelo: "claude-3-haiku-20240307"   # rápido e barato (Anthropic)
-  # modelo: "claude-3-5-sonnet-20241022"
+  # modelo: "gpt-4o"                      # mais capaz, mais caro (OpenAI)
+  # modelo: "claude-3-haiku-20240307"     # rápido e barato (Anthropic)
+  # modelo: "claude-3-5-sonnet-20241022"  # mais capaz (Anthropic)
+  # modelo: "gemini-2.0-flash"            # rápido e barato (Google)
+  # modelo: "gemini-1.5-flash"            # alternativa Google
+  # modelo: "gemini-1.5-pro"              # mais capaz (Google)
 
   # Preços por 1M tokens (input, output) — atualizar conforme pricing
   precos_por_1m:
@@ -36,6 +39,9 @@ llm:
     gpt-4o: [2.50, 10.00]
     claude-3-haiku-20240307: [0.25, 1.25]
     claude-3-5-sonnet-20241022: [3.00, 15.00]
+    gemini-2.0-flash: [0.10, 0.40]
+    gemini-1.5-flash: [0.075, 0.30]
+    gemini-1.5-pro: [1.25, 5.00]
 
 # --- Análise de anomalias ------------------------------------
 

@@ -32,6 +32,9 @@ _PRECOS_POR_1M: dict[str, tuple[float, float]] = {
     "gpt-4o":                     (2.50, 10.00),
     "claude-3-haiku-20240307":    (0.25,  1.25),
     "claude-3-5-sonnet-20241022": (3.00, 15.00),
+    "gemini-2.0-flash":           (0.10,  0.40),
+    "gemini-1.5-flash":           (0.075, 0.30),
+    "gemini-1.5-pro":             (1.25,  5.00),
 }
 
 
@@ -69,8 +72,12 @@ def _criar_llm(modelo: str, temperatura: float, provider: str, api_key: str):
         os.environ["ANTHROPIC_API_KEY"] = api_key
         from langchain_anthropic import ChatAnthropic
         return ChatAnthropic(model=modelo, temperature=temperatura)
+    elif provider == "google":
+        os.environ["GOOGLE_API_KEY"] = api_key
+        from langchain_google_genai import ChatGoogleGenerativeAI
+        return ChatGoogleGenerativeAI(model=modelo, temperature=temperatura)
     else:
-        raise ValueError(f"Provider desconhecido: {provider}")
+        raise ValueError(f"Provider desconhecido: {provider}. Use: openai | anthropic | google")
 
 
 def _parsear_json_resposta(content: str) -> dict:
