@@ -1,6 +1,6 @@
 # TS-LLM Bridge
 
-Pipeline reproduzível de análise de séries temporais com LLM, construído com **Kedro 0.19**.
+Pipeline reproduzível de análise de séries temporais com LLM, construído com **Kedro 1.x**.
 
 Conecta expertise em séries temporais com o paradigma de Large Language Models: as features que você já sabe extrair (STL, ADF, detecção de anomalias) viram input estruturado para um LLM que gera narrativas executivas, hipóteses causais e recomendações de modelo.
 
@@ -22,6 +22,14 @@ Série temporal bruta
 ```
 
 **3 pipelines Kedro · LangChain + OpenAI/Anthropic · custo típico ~$0.0003/análise**
+
+---
+
+## Fluxograma do pipeline
+
+![Grafo de dependências gerado pelo Kedro Viz](docs/kedro-pipeline.png)
+
+O grafo mostra os nodes (funções) e os datasets (setas) conectados em três pipelines encadeados. Cada seta é um arquivo persistido no catálogo — o que permite reexecutar qualquer etapa isoladamente sem reprocessar as anteriores.
 
 ---
 
@@ -62,15 +70,15 @@ Requer Python 3.11+.
 
 ```bash
 # 1. Instalar dependências
-pip install -e ".[dev]"
+uv sync --extra dev
 
 # 2. Preencher API key
 # Edite conf/local/credentials.yml com sua chave OpenAI ou Anthropic
 
 # 3. Executar
-kedro run                              # pipeline completo (gera série sintética e chama LLM)
-kedro run --pipeline=features_only     # só extração de features, sem chamar LLM
-kedro viz                              # grafo visual (pip install kedro-viz)
+uv run kedro run                              # pipeline completo (gera série sintética e chama LLM)
+uv run kedro run --pipeline=features_only     # só extração de features, sem chamar LLM
+uv run kedro viz                              # grafo visual (requer extra viz)
 ```
 
 ---
