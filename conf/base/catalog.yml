@@ -1,0 +1,84 @@
+# ============================================================
+# Data Catalog — TS-LLM Bridge
+#
+# Camadas seguindo convenção Kedro:
+#   01_raw         → dados brutos de entrada
+#   02_intermediate → série limpa e validada
+#   03_primary     → contexto TS extraído (features)
+#   04_feature     → output bruto do LLM
+#   08_reporting   → relatórios finais e logs
+# ============================================================
+
+# --- 01_raw ---------------------------------------------------
+
+raw_time_series:
+  type: pandas.CSVDataset
+  filepath: data/01_raw/time_series.csv
+  load_args:
+    parse_dates: ["data"]
+    index_col: "data"
+
+# Dataset sintético para demos e testes
+synthetic_series:
+  type: pandas.CSVDataset
+  filepath: data/01_raw/synthetic_series.csv
+  load_args:
+    parse_dates: ["data"]
+    index_col: "data"
+
+# --- 02_intermediate -----------------------------------------
+
+clean_series:
+  type: pandas.CSVDataset
+  filepath: data/02_intermediate/clean_series.csv
+  save_args:
+    index: true
+    date_format: "%Y-%m-%d"
+
+# --- 03_primary ----------------------------------------------
+
+ts_context:
+  type: kedro_datasets.json.JSONDataset
+  filepath: data/03_primary/ts_context.json
+
+prompt_inputs:
+  type: kedro_datasets.json.JSONDataset
+  filepath: data/03_primary/prompt_inputs.json
+
+# --- 04_feature ----------------------------------------------
+
+llm_analysis_output:
+  type: kedro_datasets.json.JSONDataset
+  filepath: data/04_feature/llm_analysis_output.json
+
+anomaly_investigation:
+  type: kedro_datasets.json.JSONDataset
+  filepath: data/04_feature/anomaly_investigation.json
+
+model_recommendation:
+  type: kedro_datasets.json.JSONDataset
+  filepath: data/04_feature/model_recommendation.json
+
+# --- 08_reporting --------------------------------------------
+
+evaluation_result:
+  type: kedro_datasets.json.JSONDataset
+  filepath: data/08_reporting/evaluation_result.json
+
+cost_report:
+  type: kedro_datasets.json.JSONDataset
+  filepath: data/08_reporting/cost_report.json
+
+final_report:
+  type: kedro_datasets.json.JSONDataset
+  filepath: data/08_reporting/final_report.json
+
+llm_call_log:
+  type: pandas.CSVDataset
+  filepath: data/08_reporting/llm_call_log.csv
+  save_args:
+    index: false
+  load_args:
+    dtype:
+      tokens_input: int
+      tokens_output: int

@@ -1,0 +1,74 @@
+# ============================================================
+# Parameters — TS-LLM Bridge
+#
+# Todos os hiperparâmetros do projeto ficam aqui.
+# Referenciados nos nodes como parâmetro "params:xxx"
+# ============================================================
+
+# --- Feature extraction --------------------------------------
+
+feature_extraction:
+  serie_nome: "serie_principal"
+  limiar_anomalia: 2.8        # desvios padrão para detectar anomalia
+  max_anomalias: 5            # máximo de anomalias reportadas
+  coluna_valor: "valor"       # nome da coluna de valores no CSV
+  validar_frequencia: true    # inferir e validar frequência automaticamente
+
+# --- LLM -----------------------------------------------------
+
+llm:
+  provider: "openai"                    # openai | anthropic
+  modelo: "gpt-4o-mini"                 # modelo padrão (mais barato)
+  temperatura: 0.0                      # 0 = determinístico
+  max_tokens: 1000
+  timeout_segundos: 60
+  max_tentativas: 3                     # retry automático
+  pergunta_padrao: "Gere uma análise completa e recomende um modelo de forecast."
+
+  # Modelos alternativos disponíveis:
+  # modelo: "gpt-4o"                    # mais capaz, mais caro
+  # modelo: "claude-3-haiku-20240307"   # rápido e barato (Anthropic)
+  # modelo: "claude-3-5-sonnet-20241022"
+
+  # Preços por 1M tokens (input, output) — atualizar conforme pricing
+  precos_por_1m:
+    gpt-4o-mini: [0.15, 0.60]
+    gpt-4o: [2.50, 10.00]
+    claude-3-haiku-20240307: [0.25, 1.25]
+    claude-3-5-sonnet-20241022: [3.00, 15.00]
+
+# --- Análise de anomalias ------------------------------------
+
+anomaly_analysis:
+  investigar_todas: false      # true = investiga cada anomalia detectada
+  max_anomalias_investigar: 3  # limite para evitar custo excessivo
+
+# --- Recomendação de modelo ----------------------------------
+
+model_recommendation:
+  horizonte_forecast: 12       # períodos à frente
+  prioridade: "acurácia"       # acurácia | interpretabilidade | velocidade
+
+# --- Avaliação de qualidade ----------------------------------
+
+evaluation:
+  score_minimo: 0.70           # threshold para "APROVADO"
+  penalidade_por_erro: 0.25    # impacto de cada erro no score
+  penalidade_por_aviso: 0.03   # impacto de cada aviso no score
+  max_penalidade_avisos: 0.15
+
+# --- Geração de dados sintéticos (para demos/testes) ---------
+
+synthetic_data:
+  n_periodos: 48
+  frequencia: "ME"             # ME = fim de mês
+  data_inicio: "2020-01"
+  nivel_base: 100.0
+  tendencia: 0.8               # por período
+  amplitude_sazonal: 20.0
+  periodo_sazonal: 12
+  ruido_std: 5.0
+  seed: 42
+  # Anomalia injetada:
+  anomalia_posicao: 0.6        # 60% do comprimento da série
+  anomalia_magnitude: 60.0     # valor adicionado ao ponto
