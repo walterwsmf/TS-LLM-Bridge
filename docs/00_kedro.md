@@ -23,6 +23,105 @@ O que o Kedro resolve:
 
 ---
 
+## Ambiente de desenvolvimento com uv
+
+`uv` é o gerenciador de pacotes e ambientes virtuais que este projeto usa. É entre 10–100× mais rápido que `pip` e resolve dependências de forma determinística.
+
+### Instalação do uv
+
+```bash
+# macOS / Linux
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# ou via pip (se já tiver Python)
+pip install uv
+```
+
+### Criando o ambiente e instalando as dependências
+
+```bash
+# Clonar o projeto
+git clone <url-do-repo>
+cd ts-llm-bridge
+
+# Criar o .venv e instalar todas as dependências declaradas no pyproject.toml
+uv sync
+
+# Para instalar também as dependências de dev (pytest, ruff, etc.)
+uv sync --extra dev
+
+# Para instalar o extra de visualização (kedro-viz)
+uv sync --extra viz
+```
+
+O `uv sync` lê o `pyproject.toml`, resolve o grafo de dependências e cria o `.venv` na raiz do projeto. Você não precisa rodar `pip install` separadamente.
+
+### Ativando o ambiente
+
+```bash
+# macOS / Linux
+source .venv/bin/activate
+
+# Windows
+.venv\Scripts\activate
+```
+
+Ou, sem ativar, rode diretamente com `uv run`:
+
+```bash
+uv run kedro run
+uv run kedro run --pipeline=features_only
+uv run python -c "import ts_llm_bridge; print('ok')"
+```
+
+### Adicionando dependências
+
+```bash
+# Adiciona ao pyproject.toml e instala imediatamente
+uv add nome-do-pacote
+
+# Adiciona só para dev
+uv add --optional dev nome-do-pacote
+
+# Remove
+uv remove nome-do-pacote
+```
+
+Não use `pip install` direto no projeto — o `uv` não ficará ciente da mudança e o `pyproject.toml` ficará desatualizado.
+
+### Configurando as credenciais
+
+Antes da primeira execução, preencha o arquivo de credenciais (não está no git):
+
+```bash
+# O arquivo já existe com placeholders
+cat conf/local/credentials.yml
+```
+
+```yaml
+openai:
+  api_key: "sk-..."        # https://platform.openai.com/api-keys
+
+anthropic:
+  api_key: "sk-ant-..."    # https://console.anthropic.com/
+```
+
+Edite com sua chave real. Só é necessária a chave do provider configurado em `conf/base/parameters.yml` (`llm.provider`).
+
+### Verificando a instalação
+
+```bash
+# Deve listar os pipelines disponíveis sem erro
+kedro run --pipeline=features_only
+
+# Deve mostrar o catálogo configurado
+kedro catalog list
+```
+
+Se o `kedro` não for encontrado, verifique se o `.venv` está ativado ou use `uv run kedro`.
+
+---
+
 ## Os quatro conceitos centrais
 
 ### 1. Node
