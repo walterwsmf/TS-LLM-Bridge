@@ -307,7 +307,7 @@ def extract_ts_context(
     if n >= 20:
         try:
             from statsmodels.tsa.stattools import adfuller
-            estacionaria = adfuller(series.values, autolag="AIC")[1] < 0.05
+            estacionaria = bool(adfuller(series.values, autolag="AIC")[1] < 0.05)
         except Exception:
             pass
 
