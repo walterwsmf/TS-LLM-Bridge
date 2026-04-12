@@ -28,6 +28,7 @@ conf/local/credentials.yml
 .vscode/
 .idea/
 *.DS_Store
+.claude
 
 ## Jupyter
 .ipynb_checkpoints/
