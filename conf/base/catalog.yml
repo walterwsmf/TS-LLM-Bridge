@@ -22,6 +22,9 @@ raw_time_series:
 synthetic_series:
   type: pandas.CSVDataset
   filepath: data/01_raw/synthetic_series.csv
+  save_args:
+    index: true
+    date_format: "%Y-%m-%d"
   load_args:
     parse_dates: ["data"]
     index_col: "data"
@@ -34,6 +37,9 @@ clean_series:
   save_args:
     index: true
     date_format: "%Y-%m-%d"
+  load_args:
+    parse_dates: ["data"]
+    index_col: "data"
 
 # --- 03_primary ----------------------------------------------
 
