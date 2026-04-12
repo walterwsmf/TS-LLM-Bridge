@@ -14,7 +14,6 @@ from __future__ import annotations
 
 import logging
 import time
-from datetime import datetime
 from typing import Any
 
 from kedro.framework.hooks import hook_impl
@@ -76,7 +75,6 @@ class NodeTimingHook:
         catalog,
         inputs: dict[str, Any],
         is_async: bool,
-        session_id: str,
     ) -> None:
         self._start_times[node.name] = time.monotonic()
         logger.info(f"▶ Iniciando node: {node.name}")
@@ -89,7 +87,6 @@ class NodeTimingHook:
         inputs: dict[str, Any],
         outputs: dict[str, Any],
         is_async: bool,
-        session_id: str,
     ) -> None:
         start = self._start_times.pop(node.name, None)
         if start:
@@ -104,7 +101,6 @@ class NodeTimingHook:
         catalog,
         inputs: dict[str, Any],
         is_async: bool,
-        session_id: str,
     ) -> None:
         logger.error(f"✗ Erro no node {node.name}: {error}")
 
