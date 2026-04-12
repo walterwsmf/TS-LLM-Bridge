@@ -29,6 +29,7 @@ conf/local/credentials.yml
 .idea/
 *.DS_Store
 .claude
+.viz
 
 ## Jupyter
 .ipynb_checkpoints/
