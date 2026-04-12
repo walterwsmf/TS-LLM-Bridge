@@ -1,23 +1,23 @@
 # TS-LLM Bridge — Documentação do Projeto
 
-> **Público-alvo:** Cientista de dados sênior em time series fazendo transição para LLM.
-> Você não está aprendendo Python do zero — está aprendendo a pensar diferente sobre modelos.
+> **Público-alvo:** Profissionais com experiência em dados (Python, pandas, ML básico) que querem integrar LLMs em pipelines analíticos.
+> O foco não é aprender Python do zero — é aprender a pensar diferente sobre modelos.
 
 ---
 
 ## O que é este projeto
 
-O **TS-LLM Bridge** é um projeto de aprendizado estruturado como produto real. Ele conecta duas expertises: sua base sólida em séries temporais e o novo paradigma de Large Language Models. A metáfora central do projeto é simples:
+O **TS-LLM Bridge** é um projeto estruturado como produto real. Ele conecta duas expertises: análise clássica de séries temporais e o paradigma de Large Language Models. A metáfora central do projeto é simples:
 
 > *Você já sabe detectar padrões. O LLM aprende a comunicá-los.*
 
-Em vez de substituir seu conhecimento, o projeto usa tudo que você já domina — STL decomposition, detecção de anomalias, ADF test, seleção de modelos — como **input** para um LLM que gera narrativas executivas, hipóteses causais e código de pré-processamento adaptado.
+Em vez de substituir técnicas consolidadas, o projeto as usa — STL decomposition, detecção de anomalias, ADF test, seleção de modelos — como **input** para um LLM que gera narrativas executivas, hipóteses causais e recomendações de pré-processamento.
 
 ---
 
 ## Por que Kedro
 
-Kedro não é apenas estrutura de pastas. Para um cientista de dados sênior, ele resolve três problemas reais:
+Kedro não é apenas estrutura de pastas. Ele resolve três problemas reais em pipelines com LLM:
 
 **1. Reproducibilidade de experimentos com LLM**
 Chamadas a LLMs são não-determinísticas (temperature > 0) e custam dinheiro. O catálogo do Kedro persiste cada saída intermediária — você nunca repaga por um contexto que já foi extraído.

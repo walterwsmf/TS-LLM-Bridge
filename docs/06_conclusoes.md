@@ -71,7 +71,7 @@ Usar um LLM (geralmente mais capaz) para avaliar o output de outro LLM. O `evalu
 ### Nível 1 — Consolidar (1-2 semanas)
 - [ ] Adicionar testes unitários para cada node com `pytest` + dados sintéticos
 - [ ] Implementar few-shot no `run_anomaly_investigation` com 3-5 exemplos anotados
-- [ ] Testar com séries reais do seu contexto de trabalho
+- [ ] Testar com séries reais do domínio de interesse
 - [ ] Implementar o node `gerar_codigo_preprocessing` usando o `PROMPT_CODIGO_PREPROCESSING`
 
 ### Nível 2 — Expandir (2-4 semanas)
@@ -86,10 +86,10 @@ Usar um LLM (geralmente mais capaz) para avaliar o output de outro LLM. O `evalu
 - [ ] Explorar Anthropic Claude para comparar com OpenAI no mesmo pipeline
 - [ ] Estudar embeddings e busca semântica com `pgvector` ou `FAISS`
 
-### Nível 4 — Transição para PM/Tech Lead
+### Nível 4 — Produtizar
 - [ ] Documentar trade-offs de custo (gpt-4o-mini vs gpt-4o) para decisão executiva
-- [ ] Escrever proposta de valor do produto: "o que este pipeline economiza em horas de analista?"
-- [ ] Mapear casos de uso adicionais no contexto de healthcare/auditoria (seu contexto atual)
+- [ ] Escrever proposta de valor: "o que este pipeline economiza em horas de analista?"
+- [ ] Mapear casos de uso adicionais no domínio do seu projeto
 - [ ] Estruturar como produto interno: API FastAPI que recebe CSV e retorna `final_report`
 
 ---
@@ -119,11 +119,11 @@ Você completou este projeto com sucesso se:
 
 ## Reflexão final
 
-A transição de cientista de dados sênior para engenheiro/PM de LLM não é aprender uma nova tecnologia do zero — é reconhecer que você já tem 80% das habilidades necessárias.
+Integrar LLMs em pipelines de dados não é aprender uma tecnologia do zero — é reconhecer que boas práticas de engenharia de dados já cobrem a maior parte do caminho.
 
-O que muda:
+O que muda ao incorporar LLMs:
 
-| Antes (TS) | Depois (LLM) |
+| Antes (TS clássico) | Com LLM |
 |---|---|
 | Features numéricas como input | Texto + features como contexto |
 | Modelos sklearn/statsmodels | Chamadas à API com prompts |
@@ -133,5 +133,3 @@ O que muda:
 | Validação: backtesting | Validação: checks automáticos de output |
 
 O que **não** muda: o rigor científico, a desconfiança saudável de qualquer modelo, a necessidade de validar antes de confiar, e o foco em entregar valor para o negócio — não em usar a tecnologia mais nova por ser nova.
-
-Bem-vindo ao mundo de LLMs. Você chegou mais preparado do que imagina.

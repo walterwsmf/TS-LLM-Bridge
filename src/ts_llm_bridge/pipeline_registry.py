@@ -43,10 +43,8 @@ def register_pipelines() -> dict[str, Pipeline]:
         "llm_analysis": llm_pipeline,
         "evaluation": eval_pipeline,
 
-        # Pipeline de demo (igual ao full, tags explicitadas)
-        "demo": full_pipeline.only_nodes_with_tags("demo", "feature_extraction")
-                + llm_pipeline
-                + eval_pipeline,
+        # Pipeline de demo (igual ao full — usa série sintética por padrão)
+        "demo": full_pipeline,
 
         # Só features, sem chamar LLM (útil para inspecionar o contexto)
         "features_only": feature_pipeline,
