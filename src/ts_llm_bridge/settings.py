@@ -26,6 +26,5 @@ CONFIG_LOADER_ARGS = {
 }
 
 from ts_llm_bridge.hooks import CredentialsToEnvHook, NodeTimingHook  # noqa: E402
-from kedro_viz.integrations.kedro.run_hooks import pipeline_run_hook  # noqa: E402
 
-HOOKS = (CredentialsToEnvHook(), NodeTimingHook(), pipeline_run_hook)
+HOOKS = (CredentialsToEnvHook(), NodeTimingHook())
