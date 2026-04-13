@@ -82,7 +82,7 @@ Usar um LLM (geralmente mais capaz) para avaliar o output de outro LLM. O `evalu
 
 ### Nível 3 — Aprofundar LLM (4-8 semanas)
 - [ ] Estudar LangGraph para pipelines com lógica condicional (agent-like)
-- [ ] Implementar RAG com documentos contextuais (ex: relatórios de auditoria)
+- [ ] Implementar RAG com documentos contextuais (ex: documentos históricos)
 - [ ] Explorar Anthropic Claude para comparar com OpenAI no mesmo pipeline
 - [ ] Estudar embeddings e busca semântica com `pgvector` ou `FAISS`
 
